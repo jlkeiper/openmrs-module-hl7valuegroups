@@ -19,8 +19,16 @@
 
 	<!-- Add here beans related to the API context -->
 
-	
-	<!-- Services accessible via Context.getService() -->
+    <!-- HL7 Handler override -->
+    <bean class="org.openmrs.hl7.impl.HL7ServiceImpl" factory-method="getInstance">
+        <property name="HL7Handlers">
+            <map>
+                <entry key="ORU_R01"><bean class="org.openmrs.module.hl7valuegroups.api.ValueGroupORUR01Handler"/></entry>
+            </map>
+        </property>
+    </bean>
+
+    <!-- Services accessible via Context.getService() -->
 	<bean parent="serviceContext">
 		<property name="moduleService">
 			<list>

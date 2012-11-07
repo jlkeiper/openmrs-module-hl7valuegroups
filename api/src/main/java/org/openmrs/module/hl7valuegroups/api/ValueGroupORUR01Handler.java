@@ -100,6 +100,7 @@ public class ValueGroupORUR01Handler implements Application {
 	 * decide whether this handler can handle the given message
 	 *
 	 * @return fitness of this handler for the given message
+	 * @should ignore messages originating from anywhere but REFPACS
 	 */
 	public boolean canProcess(Message message) {
 		if (message != null && "ORU_R01".equals(message.getName())) {
@@ -139,6 +140,7 @@ public class ValueGroupORUR01Handler implements Application {
 	 * @should fail if question datatype is coded and a boolean is not a valid answer
 	 * @should fail if question datatype is neither Boolean nor numeric nor coded
 	 * @should process value grouped obs
+	 * @should allow default ORUR01Handler to handle messages that are not from REFPACS
 	 */
 	public Message processMessage(Message message) throws ApplicationException {
 

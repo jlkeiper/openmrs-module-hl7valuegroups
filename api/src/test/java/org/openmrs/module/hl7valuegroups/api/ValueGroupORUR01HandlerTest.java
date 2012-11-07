@@ -1,5 +1,6 @@
 package org.openmrs.module.hl7valuegroups.api;
 
+import ca.uhn.hl7v2.app.ApplicationException;
 import ca.uhn.hl7v2.app.MessageTypeRouter;
 import ca.uhn.hl7v2.model.Message;
 import ca.uhn.hl7v2.parser.GenericParser;
@@ -94,5 +95,58 @@ public class ValueGroupORUR01HandlerTest extends BaseModuleContextSensitiveTest 
 
 		Obs valueGroupIndex = Context.getObsService().getObs(valueGroupId);
 		Assert.assertNotNull("The index observation does not really exist", valueGroupIndex);
+	}
+
+	/**
+	 * @verifies ignore messages originating from anywhere but REFPACS
+	 * @see ValueGroupORUR01Handler#canProcess(ca.uhn.hl7v2.model.Message)
+	 */
+	@Test
+	public void canProcess_shouldIgnoreMessagesOriginatingFromAnywhereButREFPACS() throws Exception {
+		String hl7string = "MSH|^~\\&|FOOBAR|IU|HL7LISTENER|AMRS.ELD|20080226102656||ORU^R01|ABC101083591|P|2.5|1||||||||16^AMRS.ELD.FORMID\r"
+				+ "PID|||3^^^^||John3^Doe^||\r"
+				+ "PV1||O|1^Unknown Location||||1^Super User (1-8)|||||||||||||||||||||||||||||||||||||20080212|||||||V\r"
+				+ "ORC|RE||||||||20080226102537|1^Super User\r"
+				+ "OBR|1|||1238^MEDICAL RECORD OBSERVATIONS^99DCT\r"
+				+ "OBX|1|CWE|1558^PATIENT CONTACT METHOD^99DCT||1555^PHONE^99DCT~1726^FOLLOW-UP ACTION^99DCT|||||||||20080206\r"
+				+ "OBX|5|DT|5096^RETURN VISIT DATE^99DCT||20080229|||||||||20080212";
+
+		Message hl7message = parser.parse(hl7string);
+		ValueGroupORUR01Handler instance = new ValueGroupORUR01Handler();
+		Assert.assertFalse("Should ignore a non-REFPACS originating message.", instance.canProcess(hl7message));
+	}
+
+	/**
+	 * @verifies allow default ORUR01Handler to handle messages that are not from REFPACS
+	 * @see ValueGroupORUR01Handler#processMessage(ca.uhn.hl7v2.model.Message)
+	 *
+	 * This test is actually an integration test and would ideally be linked with the registration code,
+	 * but that is done in moduleApplicationContext.xml.
+	 */
+	@Test
+	public void processMessage_shouldAllowDefaultORUR01HandlerToHandleMessagesThatAreNotFromREFPACS() throws Exception {
+		String hl7string = "MSH|^~\\&|FOOBAR|IU|HL7LISTENER|AMRS.ELD|20080226102656||ORU^R01|ABC101083591|P|2.5|1||||||||16^AMRS.ELD.FORMID\r"
+				+ "PID|||3^^^^||John3^Doe^||\r"
+				+ "PV1||O|1^Unknown Location||||1^Super User (1-8)|||||||||||||||||||||||||||||||||||||20080212|||||||V\r"
+				+ "ORC|RE||||||||20080226102537|1^Super User\r"
+				+ "OBR|1|||1238^MEDICAL RECORD OBSERVATIONS^99DCT\r"
+				+ "OBX|1|CWE|1558^PATIENT CONTACT METHOD^99DCT||1555^PHONE^99DCT~1726^FOLLOW-UP ACTION^99DCT|||||||||20080206\r"
+				+ "OBX|5|DT|5096^RETURN VISIT DATE^99DCT||20080229|||||||||20080212";
+
+		MessageTypeRouter routerX = new MessageTypeRouter();
+		routerX.registerApplication("ORU", "R01", new MockValueGroupORUR01Handler());
+
+		Message hl7message = parser.parse(hl7string);
+		routerX.processMessage(hl7message);
+	}
+
+	/**
+	 * Mock ORU^R01 Handler for use with testing
+	 */
+	private class MockValueGroupORUR01Handler extends ValueGroupORUR01Handler {
+		@Override
+		public Message processMessage(Message message) throws ApplicationException {
+			throw new ApplicationException("Should not get to this point.");
+		}
 	}
 }
