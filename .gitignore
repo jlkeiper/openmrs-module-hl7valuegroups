@@ -1,12 +1,15 @@
 .classpath
 .idea
 .project
+*.iml
 .settings/*
 api/.classpath
 api/.project
+api/*.iml
 api/.settings/*
 api/target/*
 omod/.classpath
 omod/.project
+omod/*.iml
 omod/.settings/*
 omod/target/*
