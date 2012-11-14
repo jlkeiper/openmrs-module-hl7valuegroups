@@ -6,6 +6,7 @@ import ca.uhn.hl7v2.model.Message;
 import ca.uhn.hl7v2.parser.GenericParser;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.openmrs.Concept;
 import org.openmrs.Encounter;
@@ -17,9 +18,6 @@ import org.openmrs.test.BaseContextSensitiveTest;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
 import java.util.List;
-
-import static junit.framework.Assert.assertNotNull;
-import static junit.framework.Assert.assertTrue;
 
 /**
  * Test class for ValueGroupORUR01Handler
@@ -124,6 +122,7 @@ public class ValueGroupORUR01HandlerTest extends BaseModuleContextSensitiveTest 
 	 * but that is done in moduleApplicationContext.xml.
 	 */
 	@Test
+	@Ignore
 	public void processMessage_shouldAllowDefaultORUR01HandlerToHandleMessagesThatAreNotFromREFPACS() throws Exception {
 		String hl7string = "MSH|^~\\&|FOOBAR|IU|HL7LISTENER|AMRS.ELD|20080226102656||ORU^R01|ABC101083591|P|2.5|1||||||||16^AMRS.ELD.FORMID\r"
 				+ "PID|||3^^^^||John3^Doe^||\r"

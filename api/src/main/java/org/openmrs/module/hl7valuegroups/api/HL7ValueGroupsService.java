@@ -13,24 +13,14 @@
  */
 package org.openmrs.module.hl7valuegroups.api;
 
+import ca.uhn.hl7v2.HL7Exception;
 import org.openmrs.api.OpenmrsService;
+import org.openmrs.hl7.HL7InQueue;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * This service exposes module's core functionality. It is a Spring managed bean which is configured in moduleApplicationContext.xml.
- * <p>
- * It can be accessed only via Context:<br>
- * <code>
- * Context.getService(HL7ValueGroupsService.class).someMethod();
- * </code>
- * 
- * @see org.openmrs.api.context.Context
- */
 @Transactional
 public interface HL7ValueGroupsService extends OpenmrsService {
      
-	/*
-	 * Add service methods here
-	 * 
-	 */
+	public HL7InQueue processHL7InQueue(HL7InQueue hl7InQueue) throws HL7Exception;
+
 }
