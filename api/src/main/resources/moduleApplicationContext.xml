@@ -51,6 +51,7 @@
 		</property>
 	</bean>
 
+    <!-- this completely overrides all HL7 handlers, essentially taking over all HL7s ... -->
     <bean class="org.openmrs.hl7.impl.HL7ServiceImpl" factory-method="getInstance">
         <property name="HL7Handlers">
             <map>
