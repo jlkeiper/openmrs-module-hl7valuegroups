@@ -13,14 +13,10 @@
  */
 package org.openmrs.module.hl7valuegroups.api;
 
-import ca.uhn.hl7v2.HL7Exception;
 import org.openmrs.api.OpenmrsService;
-import org.openmrs.hl7.HL7InQueue;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 public interface HL7ValueGroupsService extends OpenmrsService {
-     
-	public HL7InQueue processHL7InQueue(HL7InQueue hl7InQueue) throws HL7Exception;
 
 }

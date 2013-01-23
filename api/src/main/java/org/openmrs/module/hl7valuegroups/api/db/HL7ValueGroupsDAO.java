@@ -16,11 +16,8 @@ package org.openmrs.module.hl7valuegroups.api.db;
 import org.openmrs.module.hl7valuegroups.api.HL7ValueGroupsService;
 
 /**
- *  Database methods for {@link HL7ValueGroupsService}.
+ * Database methods for {@link HL7ValueGroupsService}.
  */
 public interface HL7ValueGroupsDAO {
-	
-	/*
-	 * Add DAO methods here
-	 */
+
 }
